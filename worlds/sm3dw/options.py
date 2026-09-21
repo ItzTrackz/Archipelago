@@ -105,7 +105,7 @@ class SM3DWDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__+ "/n     In Super Mario 3D World, Mario dying in any way will send a DeathLink."
 
 class SM3DWBonkLink(BonkLink):
-    __doc__ = BonkLink.__doc__+"\n If enabled, Bonk Link will be enabled which means you bonk whenever another 3d Mario bonks. \n (As of now this is only SM3DW and SMO, but more games will be added in the future. [If the dev wants to ofc])
+    __doc__ = BonkLink.__doc__+"\n If enabled, Bonk Link will be enabled which means you bonk whenever another 3d Mario bonks. \n (As of now this is only SM3DW, but more games will be added in the future. [If the dev wants to ofc])
     
     display_name = "Bonk Link"
 
