@@ -104,9 +104,11 @@ class TrapPercentage(Range):
 class SM3DWDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__+ "/n     In Super Mario 3D World, Mario dying in any way will send a DeathLink."
 
-class SM3DWBonkLink(BonkLink):
-    __doc__ = BonkLink.__doc__+"\n If enabled, Bonk Link will be enabled which means you bonk whenever another 3d Mario bonks. \n (As of now this is only SM3DW, but more games will be added in the future. [If the dev wants to ofc])
-    
+class SM3DWBonkLink(Toggle):
+    """
+    If enabled, Bonk Link will be enabled which means you bonk whenever another 3d Mario bonks.
+    (As of now this is only SM3DW, but more games will be added in the future. [If the dev wants to ofc])
+    """
     display_name = "Bonk Link"
 
 
@@ -121,7 +123,7 @@ class SM3DWOptions(PerGameCommonOptions):
     boss_sanity: BossSanity
     trap_percentage: TrapPercentage
     death_link: SM3DWDeathLink
-    bonk_link: BonkLink
+    bonk_link: SM3DWBonkLink
     
 
 option_groups = [
@@ -131,6 +133,6 @@ option_groups = [
     ),
     OptionGroup(
         "Links to the Multiworld",
-        [DeathLink, BonkLink],
+        [SM3DWDeathLink, SM3DWBonkLink],
     ),
 ]

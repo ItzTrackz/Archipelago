@@ -16,5 +16,6 @@ def create_all_regions(world: SM3DWWorld) -> None:
     world_1 = Region("World 1", world.player, world.multiworld)
 
 def connect_regions(world: SM3DWWorld) -> None:
+
     world_1 = world.get_region("World 1")
     

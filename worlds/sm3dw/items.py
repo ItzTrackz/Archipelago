@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from BaseClasses import Item, ItemClassification 
+from worlds.sm3dw.options import StartingCharacter, Goal, SplitStarsByWorld, RandomizeWorlds
+
+from BaseClasses import Item, ItemClassification
+
 
 if TYPE_CHECKING:
     from .world import SM3DWWorld
@@ -139,6 +142,7 @@ def get_random_filler_item_name(world: SM3DWWorld) -> str:
             return "Bonk Trap"
         else:
             return "Smol Trap"    
+
     rand_filler = world.random.randint(0, 3)
 
     if rand_filler == 0:
@@ -176,12 +180,12 @@ def create_all_items(world: SM3DWWorld) -> None:
         world.create_item("Goomba Helmet"),
         world.create_item("Green Star Coin Rings"),
     ]
-    # if world.option.hammer == true:
+    # if world.options.hammer == True:
     #     itempool.append(world.create_item(""))
 
 
-    #option Character Unlocks
-    if world.option.character == option.mario:
+    #options Character Unlocks
+    if world.options.character == StartingCharacter.option_mario:
         starting_mario_character = world.create_item("Mario Character Unlock")
         world.push_precollected(starting_mario_character)
 
@@ -190,7 +194,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Peach Character Unlock"))
         itempool.append(world.create_item("Roselina Character Unlock"))
     
-    if world.option.character == option_luigi:
+    if world.options.character == StartingCharacter.option_luigi:
         starting_luigi_character = world.create_item("Luigi Character Unlock")
         world.push_precollected(starting_luigi_character)
 
@@ -199,7 +203,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Peach Character Unlock"))
         itempool.append(world.create_item("Roselina Character Unlock"))
     
-    if world.option.character == option_toad:
+    if world.options.character == StartingCharacter.option_toad:
         starting_toad_character = world.create_item("Toad Character Unlock")
         world.push_precollected(starting_toad_character)
 
@@ -208,7 +212,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Peach Character Unlock"))
         itempool.append(world.create_item("Roselina Character Unlock"))
     
-    if world.option.character == option_peach:
+    if world.options.character == StartingCharacter.option_peach:
         starting_peach_character = world.create_item("Peach Character Unlock")
         world.push_precollected(starting_peach_character)
 
@@ -217,7 +221,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Mario Character Unlock"))
         itempool.append(world.create_item("Roselina Character Unlock"))
     
-    if world.option.character == option_roselina:
+    if world.options.character == StartingCharacter.option_roselina:
         starting_roselina_character = world.create_item("Roselina Character Unlock")
         world.push_precollected(starting_roselina_character)
 
@@ -226,7 +230,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Peach Character Unlock"))
         itempool.append(world.create_item("Mario Character Unlock"))
     
-    if world.option.character == option_random:
+    if world.options.character == StartingCharacter.option_random:
         character_rand = world.random.randint(0 ,4)
 
         if character_rand == 0:
@@ -275,11 +279,11 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("Mario Character Unlock"))
     
     #World Stars
-    if world.option.split_stars_by_world and world.option.goal == option_world_1:
+    if world.options.split_stars_by_world and world.options.goal == Goal.option_world_1:
         itempool.append(world.create_item("World 1 Star"))
         #loop 24
     
-    elif world.option.split_stars_by_world and world.option.goal == option_world_4:
+    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_4:
 
         itempool.append(world.create_item("World 2 Star"))
         #loop 24
@@ -290,7 +294,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("World 4 Star"))
         #loop 30
 
-    elif world.option.split_stars_by_world and world.option.goal == option_world_castle:
+    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_castle:
         itempool.append(world.create_item("World 5 Star"))
         #loop 31
 
@@ -300,11 +304,11 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("World Castle Star"))
         #loop 32
 
-    elif world.option.split_stars_by_world and world.option.goal == option_world_bowser:
+    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_bowser:
         itempool.append(world.create_item("World Bowser Star"))
         #loop 39
 
-    elif world.option.split_stars_by_world and world.option.goal == option_world_mushroom:
+    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_mushroom:
         itempool.append(world.create_item("World Star Star"))
         #loop
 
@@ -314,39 +318,39 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("World Mushroom Star"))
         #loop
 
-    elif world.option.split_stars_by_world and world.option.goal == option_world_crown:
+    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_crown:
         itempool.append(world.create_item("World Crown Star"))
         #loop
     
-    elif world.option.split_stars_by_world == toggleOff and world.option.goal == option_world_1:
+    elif world.options.split_stars_by_world == False and world.options.goal == Goal.option_world_1:
         itempool.append(world.create_item("Star"))
         #loop 24
 
-    elif world.option.split_stars_by_world == toggleOff and world.option.goal == option_world_4:
+    elif world.options.split_stars_by_world == False and world.options.goal == Goal.option_world_4:
         itempool.append(world.create_item("Star"))
         #loop 109
     
-    elif world.option.split_stars_by_world == toggleOff and world.option.goal == option_world_castle:
+    elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_castle:
         itempool.append(world.create_item("Star"))
         #loop 204
 
-    elif world.option.split_stars_by_world == toggleOff and world.option.goal == option_world_bowser:
+    elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_bowser:
         itempool.append(world.create_item("Star"))
         #loop 243
     
-    elif world.option.split_stars_by_world == toggleOff and world.option.goal == option_world_mushroom:
+    elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_mushroom:
         itempool.append(world.create_item("Star"))
         #loop 243 + Star + Flower + Mushroom
 
-    elif world.option.split_stars_by_world == toggleOff and world.option.goal == option_world_crown:
+    elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_crown:
         itempool.append(world.create_item("Star"))
         #loop 243 + Star + Flower + Mushroom + Crown
     
     #Randomize Worlds
-    if world.option.randomize_worlds and world.option.goal == option_world_1:
+    if world.option.randomize_worlds and world.option.goal == Goal.option_world_1:
         itempool.append(world.create_item("World 1 Unlock"))
     
-    elif world.option.randomize_worlds and world.option.goal == option_world_4:
+    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_4:
         world_4_rand = world.random.randint(0, 2)
 
         if world_4_rand == 0:
@@ -371,7 +375,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World 2 Unlock"))
             itempool.append(world.create_item("World 4 Unlock"))
     
-    elif world.option.randomize_worlds and world.option.goal == option_world_castle:
+    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_castle:
         world_castle_rand = world.randint(0, 5)
 
         if world_castle_rand == 0:
@@ -440,7 +444,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World 5 Unlock"))
             itempool.append(world.create_item("World Castle Unlock"))
 
-    elif world.option.randomize_worlds and world.option.goal == option_world_bowser:
+    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_bowser:
         world_bowser_rand = world.random.randint(0, 6)
         
         if world_bowser_rand == 0:
@@ -527,7 +531,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World 6 Unlock"))
             itempool.append(world.create_item("World Bowser Unlock"))
     
-    elif world.option.randomize_worlds and world.option.goal == option_world_mushroom:
+    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_mushroom:
         world_mush_rand = world.random.randint(0, 9)
 
         if world_mush_rand == 0:
@@ -680,7 +684,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World 5 Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
 
-    elif world.option.randomize_worlds and world.option.goal == option_world_crown:
+    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_crown:
         world_crown_rand = world.random.randint(0, 10)
 
         if world_crown_rand == 0:
@@ -859,11 +863,11 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Crown Unlock"))
     
-    elif world.option.randomize_world == toggleOff and world.option.goal == option_world_1:
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_1:
         starting_progressive_world = world.create.item("Progressive World Unlock")
         world.push_precollected(starting_progressive_world)
     
-    elif world.option.randomize_world == toggleOff and world.option.goal == option_world_4:
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_4:
         starting_progressive_world = world.create.item("Progressive World Unlock")
         world.push_precollected(starting_progressive_world)
 
@@ -871,22 +875,10 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
     
-    elif world.option.randomize_world == toggleOff and world.option.goal == option_world_castle:
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_castle:
         starting_progressive_world = world.create.item("Progressive World Unlock")
         world.push_precollected(starting_progressive_world)
 
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-    
-    elif world.option.randomize_world == toggleOff and world.option.goal == option_world_bowser:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
-        world.push_precollected(starting_progressive_world)
-
-        itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
@@ -894,7 +886,19 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
     
-    elif world.option.randomize_world == toggleOff and world.option.goal == option_world_mushroom:
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_bowser:
+        starting_progressive_world = world.create.item("Progressive World Unlock")
+        world.push_precollected(starting_progressive_world)
+
+        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World Unlock"))
+    
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_mushroom:
         starting_progressive_world = world.create.item("Progressive World Unlock")
         world.push_precollected(starting_progressive_world)
 
@@ -909,7 +913,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
 
-    elif world.option.randomize_world == toggleOff and world.option.goal == option_world_crown:
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_crown:
         starting_progressive_world = world.create.item("Progressive World Unlock")
         world.push_precollected(starting_progressive_world)
 
