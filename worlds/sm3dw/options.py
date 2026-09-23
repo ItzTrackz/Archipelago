@@ -14,7 +14,7 @@ class Goal(Choice):
     option_world_4 = 3
     option_world_castle = 6
     option_world_bowser = 7
-    option_world_mushroom = 10
+    option_world_flower = 10
     option_world_crown = 11
     default = 7
 

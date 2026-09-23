@@ -308,20 +308,20 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("World Bowser Star"))
         #loop 39
 
-    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_mushroom:
+    elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_flower:
         itempool.append(world.create_item("World Star Star"))
-        #loop
+        #loop 32
 
         itempool.append(world.create_item("World Flower Star"))
-        #loop
+        #loop 31
 
         itempool.append(world.create_item("World Mushroom Star"))
-        #loop
+        #loop 36
 
     elif world.options.split_stars_by_world and world.options.goal == Goal.option_world_crown:
         itempool.append(world.create_item("World Crown Star"))
-        #loop
-    
+        #loop 38
+
     elif world.options.split_stars_by_world == False and world.options.goal == Goal.option_world_1:
         itempool.append(world.create_item("Star"))
         #loop 24
@@ -338,13 +338,13 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Star"))
         #loop 243
     
-    elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_mushroom:
+    elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_flower:
         itempool.append(world.create_item("Star"))
-        #loop 243 + Star + Flower + Mushroom
+        #loop 243 + Star (32) + Flower (31) + Mushroom (36)
 
     elif world.option.split_stars_by_world == False and world.option.goal == Goal.option_world_crown:
         itempool.append(world.create_item("Star"))
-        #loop 243 + Star + Flower + Mushroom + Crown
+        #loop 243 + Star (32) + Flower (31) + Mushroom (36) + Crown (38)
     
     #Randomize Worlds
     if world.option.randomize_worlds and world.option.goal == Goal.option_world_1:
@@ -531,10 +531,10 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World 6 Unlock"))
             itempool.append(world.create_item("World Bowser Unlock"))
     
-    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_mushroom:
-        world_mush_rand = world.random.randint(0, 9)
+    elif world.option.randomize_worlds and world.option.goal == Goal.option_world_flower:
+        world_flower_rand = world.random.randint(0, 9)
 
-        if world_mush_rand == 0:
+        if world_flower_rand == 0:
             starting_world_1 = world.create_item("World 1 Unlock")
             world.push_precollected(starting_world_1)
             
@@ -549,7 +549,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 1:
+        elif world_flower_rand == 1:
             starting_world_2 = world.create_item("World 2 Unlock")
             world.push_precollected(starting_world_2)
             
@@ -564,7 +564,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 2:
+        elif world_flower_rand == 2:
             starting_world_3 = world.create_item("World 3 Unlock")
             world.push_precollected(starting_world_3)
             
@@ -579,7 +579,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 3:
+        elif world_flower_rand == 3:
             starting_world_4 = world.create_item("World 4 Unlock")
             world.push_precollected(starting_world_4)
             
@@ -594,7 +594,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 4:
+        elif world_flower_rand == 4:
             starting_world_5 = world.create_item("World 5 Unlock")
             world.push_precollected(starting_world_5)
             
@@ -609,7 +609,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 5:
+        elif world_flower_rand == 5:
             starting_world_6 = world.create_item("World 6 Unlock")
             world.push_precollected(starting_world_6)
             
@@ -624,7 +624,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 6:
+        elif world_flower_rand == 6:
             starting_world_castle = world.create_item("World Castle Unlock")
             world.push_precollected(starting_world_castle)
             
@@ -639,7 +639,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 7:
+        elif world_flower_rand == 7:
             starting_world_bowser = world.create_item("World Bowser Unlock")
             world.push_precollected(starting_world_bowser)
             
@@ -654,7 +654,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
         
-        elif world_mush_rand == 8:
+        elif world_flower_rand == 8:
             starting_world_star = world.create_item("World Star Unlock")
             world.push_precollected(starting_world_star)
             
@@ -668,9 +668,9 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World 5 Unlock"))
             itempool.append(world.create_item("World Flower Unlock"))
             itempool.append(world.create_item("World Mushroom Unlock"))
-            
-        elif world_mush_rand == 9:
-            starting_world_flower = world.create_item("World Flower Unlock")
+
+        elif world_flower_rand == 9:
+            starting_world_flower = world.create_item("World Mushroom Unlock")
             world.push_precollected(starting_world_flower)
             
             itempool.append(world.create_item("World 1 Unlock"))
@@ -682,7 +682,7 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Bowser Unlock"))
             itempool.append(world.create_item("World Star Unlock"))
             itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World Flower Unlock"))
 
     elif world.option.randomize_worlds and world.option.goal == Goal.option_world_crown:
         world_crown_rand = world.random.randint(0, 10)
@@ -898,7 +898,7 @@ def create_all_items(world: SM3DWWorld) -> None:
         itempool.append(world.create_item("Progressive World Unlock"))
         itempool.append(world.create_item("Progressive World Unlock"))
     
-    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_mushroom:
+    elif world.option.randomize_world == False and world.option.goal == Goal.option_world_flower:
         starting_progressive_world = world.create.item("Progressive World Unlock")
         world.push_precollected(starting_progressive_world)
 
