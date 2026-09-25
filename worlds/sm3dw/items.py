@@ -287,70 +287,89 @@ def create_all_items(world: SM3DWWorld) -> None:
     
     #World Stars
     if world.options.split_stars_by_world.value and world.options.goal.value in all_worlds_goals:
-        itempool.append(world.create_item("World 1 Star"))
-        #loop 24
+        #itempool.append(world.create_item("World 1 Star"))
+        #loop that 24
+        for i in range(24):
+            itempool.append(world.create_item("World 1 Star"))
     
     elif world.options.split_stars_by_world.value and world.options.goal.value in post_world_1_goals:
 
-        itempool.append(world.create_item("World 2 Star"))
+        for i in range(24):
+            itempool.append(world.create_item("World 2 Star"))
         #loop 24
         
-        itempool.append(world.create_item("World 3 Star"))
+        for i in range(31):
+            itempool.append(world.create_item("World 3 Star"))
         #loop 31
 
-        itempool.append(world.create_item("World 4 Star"))
+        for i in range(30):
+            itempool.append(world.create_item("World 4 Star"))
         #loop 30
 
     elif world.options.split_stars_by_world.value and world.options.goal.value in post_world_4_goals:
-        itempool.append(world.create_item("World 5 Star"))
+        for i in range(31):
+            itempool.append(world.create_item("World 5 Star"))
         #loop 31
 
-        itempool.append(world.create_item("World 6 Star"))
+        for i in range(32):
+            itempool.append(world.create_item("World 6 Star"))
         #loop 32
 
-        itempool.append(world.create_item("World Castle Star"))
+        for i in range(32):
+            itempool.append(world.create_item("World Castle Star"))
         #loop 32
 
     elif world.options.split_stars_by_world.value and world.options.goal.value in post_world_castle_goals:
-        itempool.append(world.create_item("World Bowser Star"))
+        for i in range(39):
+            itempool.append(world.create_item("World Bowser Star"))
         #loop 39
 
     elif world.options.split_stars_by_world.value and world.options.goal.value == postgame_goals:
-        itempool.append(world.create_item("World Star Star"))
+        for i in range(32):
+            itempool.append(world.create_item("World Star Star"))
         #loop 32
 
-        itempool.append(world.create_item("World Flower Star"))
+        for i in range(31):
+            itempool.append(world.create_item("World Flower Star"))
         #loop 31
 
-        itempool.append(world.create_item("World Mushroom Star"))
+        for i in range(36):
+            itempool.append(world.create_item("World Mushroom Star"))
         #loop 36
 
     elif world.options.split_stars_by_world.value and world.options.goal.value == Goal.option_world_crown:
-        itempool.append(world.create_item("World Crown Star"))
+        for i in range(38):
+            itempool.append(world.create_item("World Crown Star"))
         #loop 38
 
     elif world.options.split_stars_by_world.value == False and world.options.goal.value == Goal.option_world_1:
-        itempool.append(world.create_item("Star"))
+        for i in range(24):
+            itempool.append(world.create_item("Star"))
         #loop 24
 
     elif world.options.split_stars_by_world.value == False and world.options.goal.value == Goal.option_world_4:
-        itempool.append(world.create_item("Star"))
+        for i in range(109):
+            itempool.append(world.create_item("Star"))
         #loop 109
     
     elif not world.options.split_stars_by_world.value and world.options.goal.value == Goal.option_world_castle:
-        itempool.append(world.create_item("Star"))
+        for i in range(204):
+            itempool.append(world.create_item("Star"))
         #loop 204
 
     elif not world.options.split_stars_by_world.value and world.options.goal.value == Goal.option_world_bowser:
-        itempool.append(world.create_item("Star"))
+        for i in range(243):
+            itempool.append(world.create_item("Star"))
         #loop 243
     
     elif not world.options.split_stars_by_world and world.options.goal.value == Goal.option_world_flower:
-        itempool.append(world.create_item("Star"))
+        for i in range(342):
+            itempool.append(world.create_item("Star"))
         #loop 243 + Star (32) + Flower (31) + Mushroom (36)
 
     elif not world.options.split_stars_by_world.value and world.options.goal.value == Goal.option_world_crown:
-        itempool.append(world.create_item("Star"))
+        for i in range(380):
+            itempool.append(world.create_item("Star"))
         #loop 243 + Star (32) + Flower (31) + Mushroom (36) + Crown (38)
     
     #Randomize Worlds
