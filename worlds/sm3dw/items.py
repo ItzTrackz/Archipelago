@@ -1,140 +1,115 @@
 from __future__ import annotations
+from enum import Enum
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NamedTuple
 
-from worlds.sm3dw.options import StartingCharacter, Goal, SplitStarsByWorld, RandomizeWorlds
+from Options import OptionError
+from .options import *
 
-from BaseClasses import Item, ItemClassification
+from BaseClasses import Item, ItemClassification as IC
 
 
 if TYPE_CHECKING:
-    from .world import SM3DWWorld
-
-ITEM_NAME_TO_ID = {
-    #Character Unlocks
-    "Mario Character Unlock": 1,
-    "Luigi Character Unlock": 2,
-    "Toad Character Unlock": 3,
-    "Peach Character Unlock": 4,
-    "Roselina Character Unlock": 5,
-    #World Unlocks
-    "Progressive World Unlock": 52,
-    "World 1 Unlock": 6,
-    "World 2 Unlock": 7,
-    "World 3 Unlock": 8,
-    "World 4 Unlock": 9,
-    "World 5 Unlock": 10,
-    "World 6 Unlock": 11,
-    "World Castle Unlock": 12,
-    "World Bowser Unlock": 13,
-    "World Star Unlock": 14,
-    "World Flower Unlock": 15,
-    "World Mushroom Unlock": 16,
-    "World Crown Unlock": 17,
-    #Random Character Unlocks
-    "Plessy Unlock": 18,
-    "P-Switches": 19,
-    "?-! Switches": 20,
-    "Captain Toad": 21,
-    "Swapping Blocks": 22,
-    "Bomb Helmets": 23,
-    "Double Cherry": 24,
-    "Cat Suit": 25,
-    "Gold Cat Suit": 26,
-    "Fire Flower": 27,
-    "Boomerang Suit": 28,
-    "Helicopter Helmet": 29,
-    "Shoe Skis": 30,
-    "Goomba Helmet": 31,
-    "Green Star Coin Rings": 32,
-    #Stars
-    "World 1 Star": 33,
-    "World 2 Star": 34,
-    "World 3 Star": 35,
-    "World 4 Star": 36,
-    "World 5 Star": 37,
-    "World 6 Star": 38,
-    "World Castle Star": 39,
-    "World Bowser Star": 40,
-    "World Star Star": 41,
-    "World Flower Star": 42,
-    "World Mushroom Star": 43,
-    "World Crown Star": 44,
-    "Star": 45,
-    #Filler Items
-    "1-UP": 46,
-    "15-UP": 47,
-    "Random Powerup": 48,
-    "Fill up Extra Power-Up Slot": 49,
-    "Smol Trap": 50,
-    "Bonk Trap": 51,
-
-}
-
-
-
-DEFAULT_ITEM_CLASSIFICATIONS = {
-    #Character Unlocks
-    "Mario Character Unlock": ItemClassification.progression,
-    "Luigi Character Unlock": ItemClassification.progression,
-    "Toad Character Unlock": ItemClassification.progression,
-    "Peach Character Unlock": ItemClassification.progression,
-    "Roselina Character Unlock": ItemClassification.progression,
-    #World Unlocks
-    "Progressive World Unlock": ItemClassification.progression,
-    "World 1 Unlock": ItemClassification.progression,
-    "World 2 Unlock": ItemClassification.progression,
-    "World 3 Unlock": ItemClassification.progression,
-    "World 4 Unlock": ItemClassification.progression,
-    "World 5 Unlock": ItemClassification.progression,
-    "World 6 Unlock": ItemClassification.progression,
-    "World Castle Unlock": ItemClassification.progression,
-    "World Bowser Unlock": ItemClassification.progression,
-    "World Star Unlock": ItemClassification.progression,
-    "World Flower Unlock": ItemClassification.progression,
-    "World Mushroom Unlock": ItemClassification.progression,
-    "World Crown Unlock": ItemClassification.progression,
-    #Random Character Unlocks
-    "Plessy Unlock": ItemClassification.progression,
-    "P-Switches Unlock": ItemClassification.progression,
-    "?-! Switches": ItemClassification.progression,
-    "Captain Toad Levels": ItemClassification.progression,
-    "Swapping Blocks": ItemClassification.progressive,
-    "Bomb Helmets": ItemClassification.progressive,
-    "Double Cherry": ItemClassification.progressive,
-    "Cat Suit": ItemClassification.progressive,
-    "Gold Cat Suit": ItemClassification.progressive,
-    "Fire Flower": ItemClassification.progressive,
-    "Boomerang Suit": ItemClassification.progressive,
-    "Helicopter Helmet": ItemClassification.progressive,
-    "Shoe Skis": ItemClassification.useful,
-    "Goomba Helmet": ItemClassification.useful,
-    "Green Star Coin Rings": ItemClassification.progressive,
-    #Stars
-    "World 1 Star": ItemClassification.progression,
-    "World 2 Star": ItemClassification.progression,
-    "World 3 Star": ItemClassification.progression,
-    "World 4 Star": ItemClassification.progression,
-    "World 5 Star": ItemClassification.progression,
-    "World 6 Star": ItemClassification.progression,
-    "World Castle Star": ItemClassification.progression,
-    "World Bowser Star": ItemClassification.progression,
-    "World Star Star": ItemClassification.progression,
-    "World Flower Star": ItemClassification.progression,
-    "World Mushroom Star": ItemClassification.progression,
-    "World Crown Star": ItemClassification.progression,
-    "Star": ItemClassification.progressive,
-    #Filler Items
-    "1-UP": ItemClassification.filler,
-    "15-UP": ItemClassification.filler,
-    "Random Powerup": ItemClassification.filler,
-    "Fill up Extra Power-Up Slot": ItemClassification.filler,
-    "Smol Trap": ItemClassification.trap,
-    "Bonk Trap": ItemClassification.trap,
-}
+    from . import SM3DWWorld
 
 class SM3DWItem(Item):
     game = "Super Mario 3D World"
+
+class ItemGroup(str, Enum):
+    CHARACTERS = "Characters"
+    WORLDS = "Worlds"
+    UNLOCKS = "Unlocks"
+    STARS = "Stars"
+    FILLER = "Filler"
+    TRAPS = "Traps"
+
+
+class ItemData(NamedTuple):
+    id: int
+    classification: IC
+    group: ItemGroup
+
+
+characters = {
+    "Mario": ItemData(1, IC.progression, ItemGroup.CHARACTERS),
+    "Luigi": ItemData(2, IC.progression, ItemGroup.CHARACTERS),
+    "Toad": ItemData(3, IC.progression, ItemGroup.CHARACTERS),
+    "Peach": ItemData(4, IC.progression, ItemGroup.CHARACTERS),
+    "Rosalina": ItemData(5, IC.progression, ItemGroup.CHARACTERS),
+}
+
+worlds = {
+    "Progressive World": ItemData(52, IC.progression, ItemGroup.WORLDS),
+    "World 1": ItemData(6, IC.progression, ItemGroup.WORLDS),
+    "World 2": ItemData(7, IC.progression, ItemGroup.WORLDS),
+    "World 3": ItemData(8, IC.progression, ItemGroup.WORLDS),
+    "World 4": ItemData(9, IC.progression, ItemGroup.WORLDS),
+    "World 5": ItemData(10, IC.progression, ItemGroup.WORLDS),
+    "World 6": ItemData(11, IC.progression, ItemGroup.WORLDS),
+    "World Castle": ItemData(12, IC.progression, ItemGroup.WORLDS),
+    "World Bowser": ItemData(13, IC.progression, ItemGroup.WORLDS),
+    "World Star": ItemData(14, IC.progression, ItemGroup.WORLDS),
+    "World Flower": ItemData(15, IC.progression, ItemGroup.WORLDS),
+    "World Mushroom": ItemData(16, IC.progression, ItemGroup.WORLDS),
+    "World Crown": ItemData(17, IC.progression, ItemGroup.WORLDS),
+}
+
+unlocks = {
+    "Plessy": ItemData(18, IC.progression, ItemGroup.UNLOCKS),
+    "P-Switches": ItemData(19, IC.progression, ItemGroup.UNLOCKS),
+    "?-! Switches": ItemData(20, IC.progression, ItemGroup.UNLOCKS),
+    "Captain Toad": ItemData(21, IC.progression, ItemGroup.UNLOCKS),
+    "Swapping Blocks": ItemData(22, IC.progression, ItemGroup.UNLOCKS),
+    "Bomb Helmets": ItemData(23, IC.progression, ItemGroup.UNLOCKS),
+    "Double Cherry": ItemData(24, IC.progression, ItemGroup.UNLOCKS),
+    "Cat Suit": ItemData(25, IC.progression, ItemGroup.UNLOCKS),
+    "Gold Cat Suit": ItemData(26, IC.progression, ItemGroup.UNLOCKS),
+    "Fire Flower": ItemData(27, IC.progression, ItemGroup.UNLOCKS),
+    "Boomerang Suit": ItemData(28, IC.progression, ItemGroup.UNLOCKS),
+    "Helicopter Helmet": ItemData(29, IC.progression, ItemGroup.UNLOCKS),
+    "Shoe Skis": ItemData(30, IC.useful, ItemGroup.UNLOCKS),
+    "Goomba Helmet": ItemData(31, IC.useful, ItemGroup.UNLOCKS),
+    "Green Star Coin Rings": ItemData(32, IC.progression, ItemGroup.UNLOCKS),
+}
+
+stars = {
+    "World 1 Star": ItemData(33, IC.progression, ItemGroup.STARS),
+    "World 2 Star": ItemData(34, IC.progression, ItemGroup.STARS),
+    "World 3 Star": ItemData(35, IC.progression, ItemGroup.STARS),
+    "World 4 Star": ItemData(36, IC.progression, ItemGroup.STARS),
+    "World 5 Star": ItemData(37, IC.progression, ItemGroup.STARS),
+    "World 6 Star": ItemData(38, IC.progression, ItemGroup.STARS),
+    "World Castle Star": ItemData(39, IC.progression, ItemGroup.STARS),
+    "World Bowser Star": ItemData(40, IC.progression, ItemGroup.STARS),
+    "World Star Star": ItemData(41, IC.progression, ItemGroup.STARS),
+    "World Flower Star": ItemData(42, IC.progression, ItemGroup.STARS),
+    "World Mushroom Star": ItemData(43, IC.progression, ItemGroup.STARS),
+    "World Crown Star": ItemData(44, IC.progression, ItemGroup.STARS),
+    "Star": ItemData(45, IC.progression, ItemGroup.STARS),
+}
+
+filler = {
+    "1-UP": ItemData(46, IC.filler, ItemGroup.FILLER),
+    "15-UP": ItemData(47, IC.filler, ItemGroup.FILLER),
+    "Random Powerup": ItemData(48, IC.filler, ItemGroup.FILLER),
+    "Fill up Extra Power-Up Slot": ItemData(49, IC.filler, ItemGroup.FILLER),
+}
+
+traps = {
+    "Smol Trap": ItemData(50, IC.trap, ItemGroup.TRAPS),
+    "Bonk Trap": ItemData(51, IC.trap, ItemGroup.TRAPS),
+}
+
+item_table = {
+    **characters,
+    **worlds,
+    **unlocks,
+    **stars,
+    **filler,
+    **traps
+}
+
+ITEM_NAME_TO_ID: dict[str, int] = {item_name: data.id for item_name, data in item_table.items()}
 
 def get_random_filler_item_name(world: SM3DWWorld) -> str:
     if world.random.randint(0, 99) < world.options.trap_percentage:
@@ -146,20 +121,20 @@ def get_random_filler_item_name(world: SM3DWWorld) -> str:
     rand_filler = world.random.randint(0, 3)
 
     if rand_filler == 0:
-            return "1-UP"
+        return "1-UP"
     elif rand_filler == 1:
-            return "15-UP"
+        return "15-UP"
     elif rand_filler == 2:
-            return "Random Powerup"
-    elif rand_filler == 3:
-            return "Fill up Extra Power-Up Slot"
+        return "Random Powerup"
+    else:
+        return "Fill up Extra Power-Up Slot"
 
 def create_item_with_correct_classification(world: SM3DWWorld, name: str) -> SM3DWItem:
-    classification = DEFAULT_ITEM_CLASSIFICATIONS[name]
+    classification = item_table[name].classification
 
     return SM3DWItem(name, classification, ITEM_NAME_TO_ID[name], world.player)
 
-    #TODO if name == "World Crown Unlock" and world.options.
+    #TODO if name == "World Crown" and world.options.
 
 all_worlds_goals = [Goal.option_world_1, Goal.option_world_4, Goal.option_world_castle, Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown]
 post_world_1_goals = [Goal.option_world_4, Goal.option_world_castle, Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown]
@@ -171,7 +146,7 @@ postgame_goals = [Goal.option_world_flower, Goal.option_world_crown]
 def create_all_items(world: SM3DWWorld) -> None:
 
     itempool: list [Item] = [
-        world.create_item("Plessy Unlock"),
+        world.create_item("Plessy"),
         world.create_item("P-Switches"),
         world.create_item("?-! Switches"),
         world.create_item("Captain Toad"),
@@ -191,100 +166,32 @@ def create_all_items(world: SM3DWWorld) -> None:
     #     itempool.append(world.create_item(""))
 
 
-    #options Character Unlocks
-    if world.options.character.value == StartingCharacter.option_mario:
-        starting_mario_character = world.create_item("Mario Character Unlock")
-        world.push_precollected(starting_mario_character)
+    # Starting Character Option / Character Unlocks
 
-        itempool.append(world.create_item("Luigi Character Unlock"))
-        itempool.append(world.create_item("Toad Character Unlock"))
-        itempool.append(world.create_item("Peach Character Unlock"))
-        itempool.append(world.create_item("Roselina Character Unlock"))
-    
-    if world.options.character.value == StartingCharacter.option_luigi:
-        starting_luigi_character = world.create_item("Luigi Character Unlock")
-        world.push_precollected(starting_luigi_character)
+    # Match & Case are just fancy if statements, match this variable to this number, if it matches, perform the indent
+    match world.options.starting_character.value:
+        case StartingCharacter.option_mario:
+            starting = "Mario"
+        case StartingCharacter.option_luigi:
+            starting = "Luigi"
+        case StartingCharacter.option_peach:
+            starting = "Peach"
+        case StartingCharacter.option_toad:
+            starting = "Toad"
+        case StartingCharacter.option_rosalina:
+            starting = "Rosalina"
+        case StartingCharacter.option_random_character:
+            starting = world.random.choice(list(characters))
+        case _:
+            raise OptionError(f"Starting Character {world.options.starting_character.value} isn't valid!")
 
-        itempool.append(world.create_item("Mario Character Unlock"))
-        itempool.append(world.create_item("Toad Character Unlock"))
-        itempool.append(world.create_item("Peach Character Unlock"))
-        itempool.append(world.create_item("Roselina Character Unlock"))
-    
-    if world.options.character.value == StartingCharacter.option_toad:
-        starting_toad_character = world.create_item("Toad Character Unlock")
-        world.push_precollected(starting_toad_character)
+    world.push_precollected(world.create_item(starting))
 
-        itempool.append(world.create_item("Luigi Character Unlock"))
-        itempool.append(world.create_item("Mario Character Unlock"))
-        itempool.append(world.create_item("Peach Character Unlock"))
-        itempool.append(world.create_item("Roselina Character Unlock"))
-    
-    if world.options.character.value == StartingCharacter.option_peach:
-        starting_peach_character = world.create_item("Peach Character Unlock")
-        world.push_precollected(starting_peach_character)
+    for character in characters:
+        if character != starting:
+            itempool.append(world.create_item(character))
 
-        itempool.append(world.create_item("Luigi Character Unlock"))
-        itempool.append(world.create_item("Toad Character Unlock"))
-        itempool.append(world.create_item("Mario Character Unlock"))
-        itempool.append(world.create_item("Roselina Character Unlock"))
-    
-    if world.options.character.value == StartingCharacter.option_roselina:
-        starting_roselina_character = world.create_item("Roselina Character Unlock")
-        world.push_precollected(starting_roselina_character)
 
-        itempool.append(world.create_item("Luigi Character Unlock"))
-        itempool.append(world.create_item("Toad Character Unlock"))
-        itempool.append(world.create_item("Peach Character Unlock"))
-        itempool.append(world.create_item("Mario Character Unlock"))
-    
-    if world.options.character.value == StartingCharacter.option_random:
-        character_rand = world.random.randint(0 ,4)
-
-        if character_rand == 0:
-            starting_mario_character = world.create_item("Mario Character Unlock")
-            world.push_precollected(starting_mario_character)
-
-            itempool.append(world.create_item("Luigi Character Unlock"))
-            itempool.append(world.create_item("Toad Character Unlock"))
-            itempool.append(world.create_item("Peach Character Unlock"))
-            itempool.append(world.create_item("Roselina Character Unlock"))
-        
-        elif character_rand == 1:
-            starting_luigi_character = world.create_item("Luigi Character Unlock")
-            world.push_precollected(starting_luigi_character)
-            
-            itempool.append(world.create_item("Mario Character Unlock"))
-            itempool.append(world.create_item("Toad Character Unlock"))
-            itempool.append(world.create_item("Peach Character Unlock"))
-            itempool.append(world.create_item("Roselina Character Unlock"))
-        
-        elif character_rand == 2:
-            starting_toad_character = world.create_item("Toad Character Unlock")
-            world.push_precollected(starting_toad_character)
-
-            itempool.append(world.create_item("Luigi Character Unlock"))
-            itempool.append(world.create_item("Mario Character Unlock"))
-            itempool.append(world.create_item("Peach Character Unlock"))
-            itempool.append(world.create_item("Roselina Character Unlock"))
-        
-        elif character_rand == 3:
-            starting_peach_character = world.create_item("Peach Character Unlock")
-            world.push_precollected(starting_peach_character)
-
-            itempool.append(world.create_item("Luigi Character Unlock"))
-            itempool.append(world.create_item("Toad Character Unlock"))
-            itempool.append(world.create_item("Mario Character Unlock"))
-            itempool.append(world.create_item("Roselina Character Unlock"))
-        
-        elif character_rand == 4:
-            starting_roselina_character = world.create_item("Roselina Character Unlock")
-            world.push_precollected(starting_roselina_character)
-
-            itempool.append(world.create_item("Luigi Character Unlock"))
-            itempool.append(world.create_item("Toad Character Unlock"))
-            itempool.append(world.create_item("Peach Character Unlock"))
-            itempool.append(world.create_item("Mario Character Unlock"))
-    
     #World Stars
     if world.options.split_stars_by_world.value and world.options.goal.value in all_worlds_goals:
         #itempool.append(world.create_item("World 1 Star"))
@@ -342,12 +249,12 @@ def create_all_items(world: SM3DWWorld) -> None:
             itempool.append(world.create_item("World Crown Star"))
         #loop 38
 
-    elif world.options.split_stars_by_world.value == False and world.options.goal.value == Goal.option_world_1:
+    elif not world.options.split_stars_by_world.value and world.options.goal.value == Goal.option_world_1:
         for i in range(24):
             itempool.append(world.create_item("Star"))
         #loop 24
 
-    elif world.options.split_stars_by_world.value == False and world.options.goal.value == Goal.option_world_4:
+    elif not world.options.split_stars_by_world.value and world.options.goal.value == Goal.option_world_4:
         for i in range(109):
             itempool.append(world.create_item("Star"))
         #loop 109
@@ -374,586 +281,586 @@ def create_all_items(world: SM3DWWorld) -> None:
     
     #Randomize Worlds
     if world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_1:
-        itempool.append(world.create_item("World 1 Unlock"))
+        itempool.append(world.create_item("World 1"))
     
     elif world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_4:
         world_4_rand = world.random.randint(0, 2)
 
         if world_4_rand == 0:
-            starting_world_1 = world.create_item("World 1 Unlock")
+            starting_world_1 = world.create_item("World 1")
             world.push_precollected(starting_world_1)
             
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
         elif world_4_rand == 1:
-            starting_world_2 = world.create_item("World 2 Unlock")
+            starting_world_2 = world.create_item("World 2")
             world.push_precollected(starting_world_2)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
         elif world_4_rand == 2:
-            starting_world_3 = world.create_item("World 3 Unlock")
+            starting_world_3 = world.create_item("World 3")
             world.push_precollected(starting_world_3)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 4"))
     
     elif world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_castle:
         world_castle_rand = world.randint(0, 5)
 
         if world_castle_rand == 0:
-            starting_world_1 = world.create_item("World 1 Unlock")
+            starting_world_1 = world.create_item("World 1")
             world.push_precollected(starting_world_1)
             
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
 
         elif world_castle_rand == 1:
-            starting_world_2 = world.create_item("World 2 Unlock")
+            starting_world_2 = world.create_item("World 2")
             world.push_precollected(starting_world_2)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
 
         elif world_castle_rand == 2:
-            starting_world_3 = world.create_item("World 3 Unlock")
+            starting_world_3 = world.create_item("World 3")
             world.push_precollected(starting_world_3)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))    
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))    
         
         elif world_castle_rand == 3:
-            starting_world_4 = world.create_item("World 4 Unlock")
+            starting_world_4 = world.create_item("World 4")
             world.push_precollected(starting_world_4)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
         
         elif world_castle_rand == 4:
-            starting_world_5 = world.create_item("World 5 Unlock")
+            starting_world_5 = world.create_item("World 5")
             world.push_precollected(starting_world_5)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
         
         elif world_castle_rand == 5:
-            starting_world_2 = world.create_item("World 6 Unlock")
+            starting_world_2 = world.create_item("World 6")
             world.push_precollected(starting_world_2)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Castle"))
 
     elif world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_bowser:
         world_bowser_rand = world.random.randint(0, 6)
         
         if world_bowser_rand == 0:
-            starting_world_1 = world.create_item("World 1 Unlock")
+            starting_world_1 = world.create_item("World 1")
             world.push_precollected(starting_world_1)
             
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
 
         elif world_bowser_rand == 1:
-            starting_world_2 = world.create_item("World 2 Unlock")
+            starting_world_2 = world.create_item("World 2")
             world.push_precollected(starting_world_2)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))   
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))   
             
         elif world_bowser_rand == 2:
-            starting_world_3 = world.create_item("World 3 Unlock")
+            starting_world_3 = world.create_item("World 3")
             world.push_precollected(starting_world_3)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
 
         elif world_bowser_rand == 3:
-            starting_world_4 = world.create_item("World 4 Unlock")
+            starting_world_4 = world.create_item("World 4")
             world.push_precollected(starting_world_4)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
         
         elif world_bowser_rand == 4:
-            starting_world_5 = world.create_item("World 5 Unlock")
+            starting_world_5 = world.create_item("World 5")
             world.push_precollected(starting_world_5)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
         
         elif world_bowser_rand == 5:
-            starting_world_6 = world.create_item("World 6 Unlock")
+            starting_world_6 = world.create_item("World 6")
             world.push_precollected(starting_world_6)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
         
         elif world_bowser_rand == 6:
-            starting_world_castle = world.create_item("World Castle Unlock")
+            starting_world_castle = world.create_item("World Castle")
             world.push_precollected(starting_world_castle)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Bowser"))
     
     elif world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_flower:
         world_flower_rand = world.random.randint(0, 9)
 
         if world_flower_rand == 0:
-            starting_world_1 = world.create_item("World 1 Unlock")
+            starting_world_1 = world.create_item("World 1")
             world.push_precollected(starting_world_1)
             
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 1:
-            starting_world_2 = world.create_item("World 2 Unlock")
+            starting_world_2 = world.create_item("World 2")
             world.push_precollected(starting_world_2)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 2:
-            starting_world_3 = world.create_item("World 3 Unlock")
+            starting_world_3 = world.create_item("World 3")
             world.push_precollected(starting_world_3)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 3:
-            starting_world_4 = world.create_item("World 4 Unlock")
+            starting_world_4 = world.create_item("World 4")
             world.push_precollected(starting_world_4)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 4:
-            starting_world_5 = world.create_item("World 5 Unlock")
+            starting_world_5 = world.create_item("World 5")
             world.push_precollected(starting_world_5)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 5:
-            starting_world_6 = world.create_item("World 6 Unlock")
+            starting_world_6 = world.create_item("World 6")
             world.push_precollected(starting_world_6)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 6:
-            starting_world_castle = world.create_item("World Castle Unlock")
+            starting_world_castle = world.create_item("World Castle")
             world.push_precollected(starting_world_castle)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 7:
-            starting_world_bowser = world.create_item("World Bowser Unlock")
+            starting_world_bowser = world.create_item("World Bowser")
             world.push_precollected(starting_world_bowser)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
         
         elif world_flower_rand == 8:
-            starting_world_star = world.create_item("World Star Unlock")
+            starting_world_star = world.create_item("World Star")
             world.push_precollected(starting_world_star)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
 
         elif world_flower_rand == 9:
-            starting_world_flower = world.create_item("World Mushroom Unlock")
+            starting_world_flower = world.create_item("World Mushroom")
             world.push_precollected(starting_world_flower)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Flower"))
 
     elif world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_crown:
         world_crown_rand = world.random.randint(0, 10)
 
         if world_crown_rand == 0:
-            starting_world_1 = world.create_item("World 1 Unlock")
+            starting_world_1 = world.create_item("World 1")
             world.push_precollected(starting_world_1)
             
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 1:
-            starting_world_2 = world.create_item("World 2 Unlock")
+            starting_world_2 = world.create_item("World 2")
             world.push_precollected(starting_world_2)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 2:
-            starting_world_3 = world.create_item("World 3 Unlock")
+            starting_world_3 = world.create_item("World 3")
             world.push_precollected(starting_world_3)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 3:
-            starting_world_4 = world.create_item("World 4 Unlock")
+            starting_world_4 = world.create_item("World 4")
             world.push_precollected(starting_world_4)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 4:
-            starting_world_5 = world.create_item("World 5 Unlock")
+            starting_world_5 = world.create_item("World 5")
             world.push_precollected(starting_world_5)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 5:
-            starting_world_6 = world.create_item("World 6 Unlock")
+            starting_world_6 = world.create_item("World 6")
             world.push_precollected(starting_world_6)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 6:
-            starting_world_castle = world.create_item("World Castle Unlock")
+            starting_world_castle = world.create_item("World Castle")
             world.push_precollected(starting_world_castle)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 7:
-            starting_world_bowser = world.create_item("World Bowser Unlock")
+            starting_world_bowser = world.create_item("World Bowser")
             world.push_precollected(starting_world_bowser)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
         
         elif world_crown_rand == 8:
-            starting_world_star = world.create_item("World Star Unlock")
+            starting_world_star = world.create_item("World Star")
             world.push_precollected(starting_world_star)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
             
         elif world_crown_rand == 9:
-            starting_world_flower = world.create_item("World Flower Unlock")
+            starting_world_flower = world.create_item("World Flower")
             world.push_precollected(starting_world_flower)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Mushroom Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Mushroom"))
+            itempool.append(world.create_item("World Crown"))
 
         elif world_crown_rand == 10:
-            starting_world_mush = world.create_item("World Mushroom Unlock")
+            starting_world_mush = world.create_item("World Mushroom")
             world.push_precollected(starting_world_mush)
             
-            itempool.append(world.create_item("World 1 Unlock"))
-            itempool.append(world.create_item("World 2 Unlock"))
-            itempool.append(world.create_item("World 3 Unlock"))
-            itempool.append(world.create_item("World 4 Unlock"))
-            itempool.append(world.create_item("World 6 Unlock"))
-            itempool.append(world.create_item("World Castle Unlock"))
-            itempool.append(world.create_item("World Bowser Unlock"))
-            itempool.append(world.create_item("World Star Unlock"))
-            itempool.append(world.create_item("World 5 Unlock"))
-            itempool.append(world.create_item("World Flower Unlock"))
-            itempool.append(world.create_item("World Crown Unlock"))
+            itempool.append(world.create_item("World 1"))
+            itempool.append(world.create_item("World 2"))
+            itempool.append(world.create_item("World 3"))
+            itempool.append(world.create_item("World 4"))
+            itempool.append(world.create_item("World 6"))
+            itempool.append(world.create_item("World Castle"))
+            itempool.append(world.create_item("World Bowser"))
+            itempool.append(world.create_item("World Star"))
+            itempool.append(world.create_item("World 5"))
+            itempool.append(world.create_item("World Flower"))
+            itempool.append(world.create_item("World Crown"))
     
-    elif not world.options.randomize_world and world.options.goal.value == Goal.option_world_1:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
+    elif not world.options.randomize_worlds and world.options.goal.value == Goal.option_world_1:
+        starting_progressive_world = world.create.item("Progressive World")
         world.push_precollected(starting_progressive_world)
     
-    elif not world.options.randomize_world.value and world.options.goal.value == Goal.option_world_4:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
+    elif not world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_4:
+        starting_progressive_world = world.create.item("Progressive World")
         world.push_precollected(starting_progressive_world)
 
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
     
-    elif not world.options.randomize_world.value and world.options.goal.value == Goal.option_world_castle:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
+    elif not world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_castle:
+        starting_progressive_world = world.create.item("Progressive World")
         world.push_precollected(starting_progressive_world)
 
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
     
-    elif not world.options.randomize_world.value and world.options.goal.value == Goal.option_world_bowser:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
+    elif not world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_bowser:
+        starting_progressive_world = world.create.item("Progressive World")
         world.push_precollected(starting_progressive_world)
 
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
     
-    elif not world.options.randomize_world.value and world.options.goal.value == Goal.option_world_flower:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
+    elif not world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_flower:
+        starting_progressive_world = world.create.item("Progressive World")
         world.push_precollected(starting_progressive_world)
 
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
 
-    elif not world.options.randomize_world.value and world.options.goal.value == Goal.option_world_crown:
-        starting_progressive_world = world.create.item("Progressive World Unlock")
+    elif not world.options.randomize_worlds.value and world.options.goal.value == Goal.option_world_crown:
+        starting_progressive_world = world.create.item("Progressive World")
         world.push_precollected(starting_progressive_world)
 
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
-        itempool.append(world.create_item("Progressive World Unlock"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
+        itempool.append(world.create_item("Progressive World"))
     
     
         

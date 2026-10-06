@@ -7,7 +7,7 @@ from BaseClasses import ItemClassification, Location
 from . import items
 
 if TYPE_CHECKING:
-    from .world import SM3DWWorld
+    from . import SM3DWWorld
 
 LOCATION_NAME_TO_ID = {
     #World 1

@@ -7,7 +7,7 @@ from BaseClasses import Entrance, Region
 from worlds.sm3dw.options import Goal, GoldenFlagSanity, BossSanity
 
 if TYPE_CHECKING:
-    from .world import SM3DWWorld
+    from . import SM3DWWorld
 
 def create_and_connect_regions(world: SM3DWWorld) -> None:
     create_all_regions(world)
@@ -75,15 +75,15 @@ def create_all_regions(world: SM3DWWorld) -> None:
         regions.append(world_3_bosses)
         regions.append(world_4_bosses)
 
-    if world.options.golden_flag_sanity == True and world.options.goal == (Goal.option_world_castle, Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown):
+    if world.options.golden_flag_sanity and world.options.goal == (Goal.option_world_castle, Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown):
         world_castle_golden_flags = Region("World Castle Golden Flags", world.player, world.multiworld)
         regions.append(world_castle_golden_flags)
 
-    if world.options.boss_sanity == True and world.options.goal == (Goal.option_world_castle, Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown):
+    if world.options.boss_sanity and world.options.goal == (Goal.option_world_castle, Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown):
         world_castle_bosses = Region("World Castle Bosses", world.player, world.multiworld)
         regions.append(world_castle_bosses)
 
-    if world.options.golden_flag_sanity == True and world.options.goal == (Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown):
+    if world.options.golden_flag_sanity and world.options.goal == (Goal.option_world_bowser, Goal.option_world_flower, Goal.option_world_crown):
         world_bowser_golden_flags = Region("World Bowser Golden Flags", world.player, world.multiworld)
         regions.append(world_bowser_golden_flags)
 
